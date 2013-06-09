@@ -199,7 +199,7 @@ do_snapshots () # properties, flags, snapname, oldglob, [targets...]
 GETOPT=$(getopt \
   --longoptions=default-exclude,dry-run,fast,skip-scrub,recursive \
   --longoptions=event:,keep:,label:,prefix:,sep: \
-  --longoptions=debug,help,quiet,syslog,verbose \
+  --longoptions=debug,help,quiet,syslog,verbose,utc \
   --options=dnshe:l:k:p:rs:qgv \
   -- "$@" ) \
   || exit 128
