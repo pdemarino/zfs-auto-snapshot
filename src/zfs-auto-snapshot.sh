@@ -514,7 +514,8 @@ if [ -z "$opt_utc" ]
 then
      DATE=$(date +%F-%H%M)
 else
-     DATE=$(date --date="TZ=UTC" +%F-%H%M)
+     export TZ=UTC
+     DATE=$(date +%F-%H%M)
 fi
 
 # The snapshot name after the @ symbol.
