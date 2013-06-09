@@ -39,6 +39,7 @@ opt_setauto=''
 opt_syslog=''
 opt_skip_scrub=''
 opt_verbose=''
+opt_utc=''
 
 # Global summary statistics.
 DESTRUCTION_COUNT='0'
@@ -68,6 +69,7 @@ print_usage ()
       --sep=CHAR     Use CHAR to separate date stamps in snapshot names.
   -g, --syslog       Write messages into the system log.
   -r, --recursive    Snapshot named filesystem and all descendants.
+      --utc          Use UTC for timestamps.
   -v, --verbose      Print info messages.
       name           Filesystem and volume names, or '//' for all ZFS datasets.
 " 
@@ -308,6 +310,10 @@ do
 			opt_verbose='1'
 			shift 1
 			;;
+		(--utc)
+			opt_utc='1'
+			shift 1
+			;;
 		(--)
 			shift 1
 			break
@@ -504,7 +510,12 @@ SNAPPROP="-o com.sun:auto-snapshot-desc='$opt_event'"
 
 # ISO style date; fifteen characters: YYYY-MM-DD-HHMM
 # On Solaris %H%M expands to 12h34.
-DATE=$(date +%F-%H%M)
+if [ -z "$opt_utc" ] 
+then
+     DATE=$(date +%F-%H%M)
+else
+     DATE=$(date --date="TZ=UTC" +%F-%H%M)
+fi
 
 # The snapshot name after the @ symbol.
 SNAPNAME="$opt_prefix${opt_label:+$opt_sep$opt_label-$DATE}"
